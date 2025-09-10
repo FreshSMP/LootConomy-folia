@@ -134,9 +134,8 @@ public class LootHandlers {
 
         Player player = event.getPlayer();
         dropLoot(plugin, player, item.getItemStack().getType(), provider, itemStack -> {
-            Location anchor = event.getHook().getLocation();
-            plugin.runTask(anchor, () -> {
-                Location locHook = event.getHook().getLocation();
+            Location locHook = event.getHook().getLocation();
+            plugin.runTask(locHook, () -> {
                 Location locPlayer = player.getLocation();
 
                 Vector vec3d = (new Vector(locPlayer.getX() - locHook.getX(), locPlayer.getY() - locHook.getY(), locPlayer.getZ() - locHook.getZ())).multiply(0.1D);
