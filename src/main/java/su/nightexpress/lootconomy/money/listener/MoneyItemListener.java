@@ -37,7 +37,6 @@ public class MoneyItemListener extends AbstractListener<LootConomyPlugin> {
         if (currency == null) return;
 
         this.moneyManager.getTrackedLoot().add(item);
-        //item.setCustomName(ItemUtil.getItemName(itemStack));
         EntityUtil.setCustomName(item, ItemUtil.getNameSerialized(itemStack));
         item.setCustomNameVisible(true);
     }
@@ -74,19 +73,6 @@ public class MoneyItemListener extends AbstractListener<LootConomyPlugin> {
     public void onDeathPenalty(PlayerDeathEvent event) {
         Player player = event.getEntity();
 
-        this.moneyManager.createDeathPenalty(player).forEach(itemStack -> {
-            event.getDrops().add(itemStack);
-        });
+        this.moneyManager.createDeathPenalty(player).forEach(itemStack -> event.getDrops().add(itemStack));
     }
-
-    /*@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onBrewingClick(InventoryClickEvent event) {
-        if (!(event.getInventory() instanceof BrewerInventory inventory)) return;
-
-        BrewingStand stand = inventory.getHolder();
-        if (stand == null) return;
-
-        PDCUtil.set(stand, Keys.brewingHolder, event.getWhoClicked().getUniqueId().toString());
-        stand.update();
-    }*/
 }

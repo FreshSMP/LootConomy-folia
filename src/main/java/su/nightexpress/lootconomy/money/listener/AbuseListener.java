@@ -55,9 +55,7 @@ public class AbuseListener extends AbstractListener<LootConomyPlugin> {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onAbuseBlockGeneration(BlockFormEvent event) {
         if (Config.ABUSE_IGNORE_BLOCK_GENERATION.get().contains(event.getNewState().getType())) {
-            plugin.runTask(task -> {
-                PlayerBlockTracker.trackForce(event.getBlock());
-            });
+            plugin.runTask(() -> PlayerBlockTracker.trackForce(event.getBlock()));
         }
     }
 

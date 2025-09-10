@@ -53,9 +53,6 @@ public class Config {
         "Sets how often (in ticks) plugin will check each player with full inventory for currency items around to pickup.",
         "1 second = 20 ticks.",
         "Setting this option to low values may damage server's performance.");
-//
-//    public static final ConfigValue<Map<String, ObjectiveCategory>> OBJECTIVE_CATEGORIES = ConfigValue.forMapById("Objectives.Categories",
-//        (cfg, path) -> ObjectiveCategory.read(cfg, path))
 
     public static final ConfigValue<Boolean> OBJECTIVE_CUSTOM_MULTIPLIERS_ENABLED = ConfigValue.create("Objectives.Custom_Multipliers.Enabled",
         false,

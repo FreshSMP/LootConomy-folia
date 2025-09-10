@@ -16,25 +16,17 @@ import java.util.function.UnaryOperator;
 
 public class ObjectiveCategory implements Writeable {
 
-//    public static final String DEF_BLOCKS  = "blocks";
-//    public static final String DEF_MOBS    = "mobs";
-//    public static final String DEF_GATHER  = "gathering";
-//    public static final String DEF_SHEAR   = "shearing";
-//    public static final String DEF_FISHING = "fishing";
-
     private final String id;
 
     private final String       name;
     private final List<String> description;
     private final NightItem    icon;
-    //private boolean      isDefault;
 
     public ObjectiveCategory(@NotNull String id, String name, List<String> description, NightItem icon) {
         this.id = id.toLowerCase();
         this.name = name;
         this.description = description;
         this.icon = icon;
-        //this.isDefault = isDefault;
     }
 
     @NotNull
@@ -42,7 +34,6 @@ public class ObjectiveCategory implements Writeable {
         String name = ConfigValue.create(path + ".Name", StringUtil.capitalizeUnderscored(id)).read(config);
         List<String> description = ConfigValue.create(path + ".Description", Lists.newList()).read(config);
         NightItem icon = ConfigValue.create(path + ".Icon", new NightItem(Material.MAP)).read(config);
-        //boolean isDefault = ConfigValue.create(path + ".Default", false).read(config);
 
         return new ObjectiveCategory(id, name, description, icon);
     }
@@ -53,7 +44,6 @@ public class ObjectiveCategory implements Writeable {
         config.set(path + ".Name", this.name);
         config.set(path + ".Description", this.description);
         config.set(path + ".Icon", this.icon);
-        //config.set(path + ".Default", this.isDefault);
     }
 
     @NotNull
@@ -84,8 +74,4 @@ public class ObjectiveCategory implements Writeable {
     public NightItem getIcon() {
         return this.icon;
     }
-
-//    public boolean isDefault() {
-//        return this.isDefault;
-//    }
 }

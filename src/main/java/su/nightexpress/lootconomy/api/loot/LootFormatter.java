@@ -10,11 +10,4 @@ public interface LootFormatter<O> {
     @NotNull String getLocalized(@NotNull O object);
 
     @Nullable O parseObject(@NotNull String name);
-
-//    @NotNull
-//    @Deprecated
-//    default String getLocalized(@NotNull String name) {
-//        O object = this.parseObject(name);
-//        return object == null ? name : this.getLocalized(object);
-//    }
 }

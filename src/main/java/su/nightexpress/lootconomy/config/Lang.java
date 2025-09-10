@@ -61,8 +61,6 @@ public class Lang extends CoreLang {
         LIGHT_RED.wrap("There is no booster.")
     );
 
-
-
     public static final LangText COMMAND_OBJECTIVES_DONE_OTHERS = LangText.of("Command.Objectives.Done.Others",
         LIGHT_GRAY.wrap("Opened objectives menu for " + LIGHT_YELLOW.wrap(PLAYER_NAME) + ".")
     );

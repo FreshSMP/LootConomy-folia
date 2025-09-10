@@ -1,6 +1,8 @@
 name: LootConomy
 main: su.nightexpress.lootconomy.LootConomyPlugin
 version: '${project.version}'
+api-version: 1.21
+folia-supported: true
 description: Spread your economy & currencies across the world in a natural way!
 author: NightExpress
 depend:
@@ -9,4 +11,3 @@ depend:
 softdepend:
   - MythicMobs
   - PlaceholderAPI
-api-version: 1.21

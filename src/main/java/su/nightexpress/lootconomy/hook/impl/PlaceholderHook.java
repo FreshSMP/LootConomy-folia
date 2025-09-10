@@ -60,18 +60,11 @@ public class PlaceholderHook {
             //LootUser user = this.plugin.getUserManager().getUserData(player);
 
             if (params.equalsIgnoreCase("boost_multiplier")) {
-//                String curId = params.substring("currency_boost_multiplier_".length());
-//                Collection<Booster> boosters = plugin.getBoosterManager().getBoosters(player);
-//                return NumberUtil.format(Booster.getMultiplier(curId, boosters));
-
                 return NumberUtil.format(plugin.getBoosterManager().getTotalBoost(player));
             }
 
             if (params.equalsIgnoreCase("boost_percent")) {
                 return NumberUtil.format(plugin.getBoosterManager().getTotalBoostPercent(player));
-//                String curId = params.substring("currency_boost_percent_".length());
-//                Collection<Booster> boosters = plugin.getBoosterManager().getBoosters(player);
-//                return NumberUtil.format(Booster.getPercent(curId, boosters));
             }
 
             return null;

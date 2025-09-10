@@ -57,19 +57,16 @@ public class CategoriesMenu extends NormalMenu<LootConomyPlugin> implements Fill
 
         autoFill.setSlots(this.objectSlots);
         autoFill.setItems(this.plugin.getMoneyManager().getCategories().stream().sorted(Comparator.comparing(ObjectiveCategory::getName)).toList());
-        autoFill.setItemCreator(category -> {
-            return category.getIcon()
-                .setHideComponents(true)
-                .setDisplayName(this.objectName)
-                .setLore(this.objectLore)
-                .replacement(replacer -> replacer
-                    .replace(category.replacePlaceholders())
-                    .replace(GENERIC_AMOUNT, () -> NumberUtil.format(plugin.getMoneyManager().getObjectives(category).size()))
-                );
-        });
-        autoFill.setItemClick(type -> (viewer1, event) -> {
-            this.runNextTick(() -> plugin.getMoneyManager().openObjectivesMenu(viewer1.getPlayer(), type));
-        });
+        autoFill.setItemCreator(category -> category.getIcon()
+            .setHideComponents(true)
+            .setDisplayName(this.objectName)
+            .setLore(this.objectLore)
+            .replacement(replacer -> replacer
+                .replace(category.replacePlaceholders())
+                .replace(GENERIC_AMOUNT, () -> NumberUtil.format(plugin.getMoneyManager().getObjectives(category).size()))
+            ));
+        autoFill.setItemClick(type -> (viewer1, event)
+                -> this.runNextTick(() -> plugin.getMoneyManager().openObjectivesMenu(viewer1.getPlayer(), type)));
 
         return autoFill.build();
     }

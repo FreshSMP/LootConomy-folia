@@ -83,7 +83,6 @@ public class ObjectivesMenu extends LinkedMenu<LootConomyPlugin, ObjectiveCatego
         LootUser user = plugin.getUserManager().getOrFetch(player);
         LootLimitData limitData = user.getLimitData();
 
-        //Collection<Booster> boosters = this.plugin.getBoosterManager().getBoosters(player);
         double totalBoost = plugin.getBoosterManager().getTotalBoost(player);
 
         autoFill.setSlots(this.objectiveSlots);

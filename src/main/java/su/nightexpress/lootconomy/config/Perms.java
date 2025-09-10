@@ -21,7 +21,6 @@ public class Perms {
     public static final UniPermission COMMAND_OBJECTIVES        = new UniPermission(PREFIX_COMMAND + "objectives");
     public static final UniPermission COMMAND_OBJECTIVES_OTHERS = new UniPermission(PREFIX_COMMAND + "objectives.others");
     public static final UniPermission COMMAND_SOUND             = new UniPermission(PREFIX_COMMAND + "sound");
-    //public static final UniPermission COMMAND_TOP               = new UniPermission(PREFIX_COMMAND + "top");
     public static final UniPermission COMMAND_RELOAD            = new UniPermission(PREFIX_COMMAND + "reload");
 
     public static final UniPermission BYPASS_DEATH_PENALTY = new UniPermission(PREFIX_BYPASS_DEATH_PENALTY + Placeholders.WILDCARD);

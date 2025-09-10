@@ -16,8 +16,6 @@ import su.nightexpress.economybridge.api.Currency;
 import su.nightexpress.lootconomy.config.Config;
 import su.nightexpress.lootconomy.config.Keys;
 import su.nightexpress.lootconomy.currency.CurrencySettings;
-import su.nightexpress.lootconomy.hook.HookId;
-import su.nightexpress.lootconomy.hook.impl.mythicmobs.MythicMobsHook;
 import su.nightexpress.lootconomy.loot.handler.LootActions;
 import su.nightexpress.lootconomy.money.object.MoneyObjective;
 import su.nightexpress.nightcore.util.*;
@@ -25,16 +23,6 @@ import su.nightexpress.nightcore.util.*;
 import java.util.UUID;
 
 public class MoneyUtils {
-
-    public static boolean hasMythicMobs() {
-        return Plugins.isInstalled(HookId.MYTHIC_MOBS);
-    }
-
-    public static boolean isVanillaMob(@NotNull Entity entity) {
-        if (hasMythicMobs() && MythicMobsHook.isMythicMob(entity)) return false;
-
-        return !(entity instanceof Player);
-    }
 
     @NotNull
     public static String getDefaultActionCategory(@NotNull String actionName) {
@@ -112,7 +100,6 @@ public class MoneyUtils {
             }
 
             ItemUtil.setCustomName(meta, settings.dropFormat(currency, amount));
-            //meta.setDisplayName(NightMessage.asLegacy(settings.dropFormat(currency, amount)));
         });
         return item;
     }

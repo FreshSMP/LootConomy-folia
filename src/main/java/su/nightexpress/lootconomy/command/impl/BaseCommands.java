@@ -71,23 +71,17 @@ public class BaseCommands {
             .withArgument(ArgumentTypes.decimal(CommandArguments.X)
                 .required()
                 .localized(Lang.COMMAND_ARGUMENT_NAME_X)
-                .withSamples(tabContext -> {
-                    return tabContext.getPlayer() == null ? Lists.newList("0") : Lists.newList(NumberUtil.format(tabContext.getPlayer().getLocation().getBlockX()));
-                })
+                .withSamples(tabContext -> tabContext.getPlayer() == null ? Lists.newList("0") : Lists.newList(NumberUtil.format(tabContext.getPlayer().getLocation().getBlockX())))
             )
             .withArgument(ArgumentTypes.decimal(CommandArguments.Y)
                 .required()
                 .localized(Lang.COMMAND_ARGUMENT_NAME_Y)
-                .withSamples(tabContext -> {
-                    return tabContext.getPlayer() == null ? Lists.newList("0") : Lists.newList(NumberUtil.format(tabContext.getPlayer().getLocation().getBlockY()));
-                })
+                .withSamples(tabContext -> tabContext.getPlayer() == null ? Lists.newList("0") : Lists.newList(NumberUtil.format(tabContext.getPlayer().getLocation().getBlockY())))
             )
             .withArgument(ArgumentTypes.decimal(CommandArguments.Z)
                 .required()
                 .localized(Lang.COMMAND_ARGUMENT_NAME_Z)
-                .withSamples(tabContext -> {
-                    return tabContext.getPlayer() == null ? Lists.newList("0") : Lists.newList(NumberUtil.format(tabContext.getPlayer().getLocation().getBlockZ()));
-                })
+                .withSamples(tabContext -> tabContext.getPlayer() == null ? Lists.newList("0") : Lists.newList(NumberUtil.format(tabContext.getPlayer().getLocation().getBlockZ())))
             )
             .executes((context, arguments) -> dropItem(plugin, context, arguments))
         );
@@ -145,7 +139,7 @@ public class BaseCommands {
             if (amount <= 0) continue;
 
             ItemStack item = MoneyUtils.createMoney(currency, settings, amount);
-            world.dropItem(location, item);
+            plugin.runTask(location, () -> world.dropItem(location, item));
         }
 
         Lang.COMMAND_DROP_DONE.getMessage().send(context.getSender(), replacer -> replacer

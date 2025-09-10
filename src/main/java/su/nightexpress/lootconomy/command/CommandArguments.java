@@ -28,7 +28,6 @@ public class CommandArguments {
         return CommandArgument.builder(name, (str, context) -> EconomyBridge.getCurrency(str))
             .localized(Lang.COMMAND_ARGUMENT_NAME_CURRENCY)
             .customFailure(Lang.ERROR_INVALID_CURRENCY)
-            .withSamples(tabContext -> EconomyBridge.getCurrencyIds().stream().toList())
-            ;
+            .withSamples(tabContext -> EconomyBridge.getCurrencyIds().stream().toList());
     }
 }

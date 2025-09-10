@@ -13,9 +13,6 @@ import su.nightexpress.lootconomy.LootConomyPlugin;
 import su.nightexpress.lootconomy.Placeholders;
 import su.nightexpress.lootconomy.booster.BoosterUtils;
 import su.nightexpress.lootconomy.currency.CurrencySettings;
-import su.nightexpress.lootconomy.hook.HookId;
-import su.nightexpress.lootconomy.hook.impl.mythicmobs.MythicMobsHook;
-import su.nightexpress.lootconomy.hook.impl.mythicmobs.MythicMobsListener;
 import su.nightexpress.lootconomy.loot.handler.LootAction;
 import su.nightexpress.economybridge.api.Currency;
 import su.nightexpress.lootconomy.api.event.PlayerCurrencyGainEvent;
@@ -67,7 +64,6 @@ public class MoneyManager extends AbstractManager<LootConomyPlugin> {
     @Override
     protected void onLoad() {
         LootActions.registerDefaults();
-        this.registerHooks();
 
         this.loadDefaults();
         this.loadCategories();
@@ -100,13 +96,6 @@ public class MoneyManager extends AbstractManager<LootConomyPlugin> {
     private void loadDefaults() {
         Creator creator = new Creator(this.plugin);
         creator.create();
-    }
-
-    private void registerHooks() {
-        this.registerExternal(HookId.MYTHIC_MOBS, () -> {
-            MythicMobsHook.register();
-            return new MythicMobsListener(this.plugin);
-        });
     }
 
     private void registerExternal(@NotNull String plugin, @NotNull Supplier<AbstractListener<LootConomyPlugin>> consumer) {
@@ -273,7 +262,6 @@ public class MoneyManager extends AbstractManager<LootConomyPlugin> {
     public boolean pickupMoney(@NotNull Player player, @NotNull Currency currency, double money, @Nullable MoneyObjective objective) {
         boolean isLose = money < 0D;
 
-        //money = currency.round(money);
         if (isLose) {
             return this.loseMoney(player, currency, money, objective);
         }
@@ -304,11 +292,6 @@ public class MoneyManager extends AbstractManager<LootConomyPlugin> {
                 replacer.replace(Placeholders.GENERIC_NAME, objective.getDisplayName());
             }
         });
-
-//        if (objective != null) {
-//            message = message.replace(Placeholders.GENERIC_NAME, objective.getDisplayName());
-//        }
-        //message.send(player);
 
         return true;
     }
@@ -342,24 +325,6 @@ public class MoneyManager extends AbstractManager<LootConomyPlugin> {
         return true;
     }
 
-//    @NotNull
-//    @Deprecated
-//    public <O> List<ItemStack> createLoot(@NotNull Player player, @NotNull LootAction<?, O> type, @NotNull O object) {
-//        return this.createLoot(player, type, object, 1);
-//    }
-//
-//    @NotNull
-//    @Deprecated
-//    public <O> List<ItemStack> createLoot(@NotNull Player player, @NotNull LootAction<?, O> type, @NotNull O object, int amount) {
-//        List<ItemStack> loot = new ArrayList<>();
-//        this.getObjectives(type).forEach(objective -> {
-//            if (objective.hasObject(type.getObjectName(object))) {
-//                loot.addAll(this.createLoot(player, objective, amount));
-//            }
-//        });
-//        return loot;
-//    }
-
     @NotNull
     public List<MoneyObjective> getObjectives(@NotNull LootAction<?, ?> action, @NotNull String objectId) {
         return this.getObjectives(action).stream().filter(objective -> objective.hasObject(objectId)).toList();
@@ -379,7 +344,6 @@ public class MoneyManager extends AbstractManager<LootConomyPlugin> {
         LootUser user = plugin.getUserManager().getOrFetch(player);
         LootLimitData limitData = user.getLimitData();
 
-        //Collection<Booster> boosters = plugin.getBoosterManager().getBoosters(player);
         double boost = plugin.getBoosterManager().getTotalBoost(player);
 
         for (Currency currency : EconomyBridge.getCurrencies()) {
@@ -424,10 +388,7 @@ public class MoneyManager extends AbstractManager<LootConomyPlugin> {
                     double leftAmount = moneyAmount;
 
                     while (leftAmount > 0 && portions > 0) {
-                        //System.out.println("moneyAmount = " + moneyAmount);
-                        double cutAmount = portions == 1 ? leftAmount : settings.cutRandom(currency, leftAmount);// currency.round(Rnd.getDouble(leftAmount));
-                        //System.out.println("cutAmount = " + cutAmount);
-                        //System.out.println("==========================");
+                        double cutAmount = portions == 1 ? leftAmount : settings.cutRandom(currency, leftAmount);
                         if (cutAmount == 0D) continue;
 
                         PlayerCurrencyLootCreateEvent event = new PlayerCurrencyLootCreateEvent(player, currency, cutAmount, objective);
@@ -576,21 +537,4 @@ public class MoneyManager extends AbstractManager<LootConomyPlugin> {
             item.setItemStack(money);
         });
     }
-
-    /*@NotNull
-    private Firework createFirework(@NotNull World world, @NotNull Location location) {
-        Firework firework = world.spawn(location, Firework.class);
-        FireworkMeta meta = firework.getFireworkMeta();
-        FireworkEffect.Type type = Rnd.get(FireworkEffect.Type.values());
-        Color color = Color.fromBGR(Rnd.get(256), Rnd.get(256), Rnd.get(256));
-        Color fade = Color.fromBGR(Rnd.get(256), Rnd.get(256), Rnd.get(256));
-        FireworkEffect effect = FireworkEffect.builder()
-            .flicker(Rnd.nextBoolean()).withColor(color).withFade(fade).with(type).trail(Rnd.nextBoolean()).build();
-
-        meta.addEffect(effect);
-        meta.setPower(Rnd.get(4));
-        firework.setFireworkMeta(meta);
-        PDCUtil.set(firework, Keys.SKILL_LEVEL_FIREWORK, true);
-        return firework;
-    }*/
 }

@@ -43,39 +43,15 @@ public class MoneyObjective {
 
     @NotNull
     public static MoneyObjective read(/*@NotNull LootConomyPlugin plugin, */@NotNull FileConfig config, @NotNull String path, @NotNull String id) {
-        //if (!cfg.getBoolean(path + ".Enabled")) return null;
 
         String actionType = ConfigValue.create(path + ".ActionType", "null").read(config);
-//        var action = LootActions.getByName(actionType);
-//
-//        if (action == null) {
-//            plugin.error("Invalid 'ActionType' for '" + id + "' objective (File: '" + config.getFile().getName() + "').");
-//            return null;
-//        }
-
-        // Add missing currencies for users to know they can use them.
-//        plugin.getCurrencyManager().getCurrencies().forEach(currency -> {
-//            if (!config.contains(path + ".Drops.Currency." + currency.getId())) {
-//                DropInfo.EMPTY.write(config, path + ".Drops.Currency." + currency.getId());
-//            }
-//        });
 
         String category = ConfigValue.create(path + ".Category", MoneyUtils.getDefaultActionCategory(actionType)).read(config);
-//        if (!plugin.getMoneyManager().hasCategory(category)) {
-//            plugin.warn("Invalid 'Category' for '" + id + "' objective (File: '" + config.getFile().getName() + "').");
-//        }
 
         String displayName = config.getString(path + ".Display_Name", id);
         NightItem icon = config.getCosmeticItem(path + ".Icon");
 
         Set<String> objects = ConfigValue.create(path + ".Objects", Lists.newSet()).onRead(set -> Lists.modify(set, String::toLowerCase)).read(config);//new HashSet<>();
-//        ConfigValue.create(path + ".Objects", Lists.newSet()).read(config).forEach(raw -> {
-//            if (action.parse(raw) == null) {
-//                plugin.error("Unknown object '" + raw + "' in '" + id + "' objective (File: '" + config.getFile().getName() + "').");
-//                return;
-//            }
-//            objects.add(raw.toLowerCase());
-//        });
 
         Map<String, DropInfo> currencyDrop = new HashMap<>();
         for (String curId : config.getSection(path + ".Drops.Currency")) {

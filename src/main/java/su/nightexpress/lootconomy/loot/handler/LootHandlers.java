@@ -34,9 +34,9 @@ public class LootHandlers {
                                      @NotNull LootProvider<O> provider,
                                      @NotNull Location location) {
         Location center = LocationUtil.setCenter3D(location.clone());
-        dropLoot(plugin, player, object, provider, itemStack -> {
-            player.getWorld().dropItem(center, itemStack);
-        });
+        dropLoot(plugin, player, object, provider, itemStack ->
+                plugin.runTask(center, () -> player.getWorld().dropItem(center, itemStack))
+        );
     }
 
     private static <O> void dropLoot(@NotNull LootConomyPlugin plugin,
@@ -79,7 +79,7 @@ public class LootHandlers {
                     plugin.getMoneyManager().pickupMoney(player, itemStack);
                     return;
                 }
-                player.getWorld().dropItem(center, itemStack);
+                plugin.runTask(center, () -> player.getWorld().dropItem(center, itemStack));
             });
         }
         return true;
@@ -92,10 +92,7 @@ public class LootHandlers {
         }
 
         Player player = event.getPlayer();
-        //dropLoot(plugin, player, block.getType(), provider, block.getLocation());
-        dropLoot(plugin, player, block.getType(), provider, itemStack -> {
-            event.getItemsHarvested().add(itemStack);
-        });
+        dropLoot(plugin, player, block.getType(), provider, itemStack -> event.getItemsHarvested().add(itemStack));
         return true;
     };
 
@@ -108,7 +105,6 @@ public class LootHandlers {
 
         // Do not drop money if mob is handled by other plugin or if it was spawned by specific source.
         if (MoneyUtils.isDevastated(entity)) return false;
-        if (!MoneyUtils.isVanillaMob(entity)) return false;
 
         // Do not drop money for mobs inside non-living (boats, minecarts) vehicles.
         Entity vehicle = entity.getVehicle();
@@ -118,30 +114,9 @@ public class LootHandlers {
         var lastCause = entity.getLastDamageCause();
         if (lastCause != null && lastCause.getDamageSource().getDamageType() == DamageType.CRAMMING) return false;
 
-        dropLoot(plugin, killer, entity.getType(), provider, itemStack -> {
-            event.getDrops().add(itemStack);
-        });
+        dropLoot(plugin, killer, entity.getType(), provider, itemStack -> event.getDrops().add(itemStack));
         return true;
     };
-
-//    public static final LootHandler<EntityDeathEvent, EntityType> ENTITY_SHOOT = (plugin, event, provider) -> {
-//        LivingEntity entity = event.getEntity();
-//        if (MoneyUtils.isDevastated(entity)) return false;
-//
-//        Player killer = entity.getKiller();
-//        if (killer == null) return false;
-//
-//        if (!(entity.getLastDamageCause() instanceof EntityDamageByEntityEvent ede)) return false;
-//        if (!(ede.getDamager() instanceof Projectile)) return false;
-//
-//        // Do not count MythicMobs here.
-//        if (Plugins.isLoaded(HookId.MYTHIC_MOBS) && MythicMobsHook.isMythicMob(entity)) return false;
-//
-//        dropLoot(plugin, killer, entity.getType(), provider, itemStack -> {
-//            event.getDrops().add(itemStack);
-//        });
-//        return true;
-//    };
 
     public static final LootHandler<PlayerShearEntityEvent, EntityType> ENTITY_SHEAR = (plugin, event, provider) -> {
         Player player = event.getPlayer();
@@ -159,12 +134,15 @@ public class LootHandlers {
 
         Player player = event.getPlayer();
         dropLoot(plugin, player, item.getItemStack().getType(), provider, itemStack -> {
-            Location locHook = event.getHook().getLocation();
-            Location locPlayer = player.getLocation();
+            Location anchor = event.getHook().getLocation();
+            plugin.runTask(anchor, () -> {
+                Location locHook = event.getHook().getLocation();
+                Location locPlayer = player.getLocation();
 
-            Vector vec3d = (new Vector(locPlayer.getX() - locHook.getX(), locPlayer.getY() - locHook.getY(), locPlayer.getZ() - locHook.getZ())).multiply(0.1D);
-            Item drop = player.getWorld().dropItem(caught.getLocation(), itemStack);
-            drop.setVelocity(drop.getVelocity().add(vec3d));
+                Vector vec3d = (new Vector(locPlayer.getX() - locHook.getX(), locPlayer.getY() - locHook.getY(), locPlayer.getZ() - locHook.getZ())).multiply(0.1D);
+                Item drop = player.getWorld().dropItem(caught.getLocation(), itemStack);
+                drop.setVelocity(drop.getVelocity().add(vec3d));
+            });
         });
         return true;
     };

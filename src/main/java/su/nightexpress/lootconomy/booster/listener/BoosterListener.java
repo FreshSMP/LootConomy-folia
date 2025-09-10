@@ -10,11 +10,8 @@ import su.nightexpress.nightcore.manager.AbstractListener;
 
 public class BoosterListener extends AbstractListener<LootConomyPlugin> {
 
-    //private final BoosterManager boosterManager;
-
     public BoosterListener(@NotNull LootConomyPlugin plugin, @NotNull BoosterManager boosterManager) {
         super(plugin);
-        //this.boosterManager = boosterManager;
     }
 
     @EventHandler(priority = EventPriority.MONITOR)

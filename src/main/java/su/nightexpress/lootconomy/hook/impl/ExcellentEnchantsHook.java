@@ -7,11 +7,6 @@ import su.nightexpress.nightcore.util.BukkitThing;
 
 public class ExcellentEnchantsHook {
 
-//    public static boolean hasTelekinesis(@NotNull ItemStack tool) {
-//        CustomEnchantment enchantment = EnchantRegistry.getById(TelekinesisEnchant.ID);
-//        return enchantment != null && EnchantUtils.contains(tool, enchantment.getBukkitEnchantment());
-//    }
-
     public static boolean hasNimble(@NotNull ItemStack tool) {
         Enchantment enchantment = BukkitThing.getEnchantment("nimble");
         return enchantment != null &&  tool.getEnchantmentLevel(enchantment) != 0;
